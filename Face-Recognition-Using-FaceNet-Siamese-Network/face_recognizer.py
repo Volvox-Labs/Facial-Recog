@@ -6,8 +6,9 @@ from scipy.spatial import distance
 from imutils import face_utils
 from keras.models import load_model
 import tensorflow as tf
+import os
 
-from fr_utils import *
+import fr_utils
 
 
 #with CustomObjectScope({'tf': tf}):
@@ -16,7 +17,7 @@ print("Total Params:", FR_model.count_params())
 
 face_cascade = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
 
-threshold = 0.25
+threshold = 0.75
 
 face_database = {}
 
@@ -36,7 +37,7 @@ while True:
 	for(x,y,w,h) in faces:
 		cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 0), 2)
 		roi = frame[y:y+h, x:x+w]
-		encoding = img_to_encoding(roi, FR_model)
+		encoding = fr_utils.img_to_encoding(roi, FR_model)
 		min_dist = 100
 		identity = None
 
@@ -47,7 +48,7 @@ while True:
 				identity = name
 			print('Min dist: ',min_dist)
 
-		if min_dist < 0.1:
+		if min_dist < 0.5:
 			cv2.putText(frame, "Face : " + identity[:-1], (x, y - 50), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 255, 0), 2)
 			cv2.putText(frame, "Dist : " + str(min_dist), (x, y - 20), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 255, 0), 2)
 		else:

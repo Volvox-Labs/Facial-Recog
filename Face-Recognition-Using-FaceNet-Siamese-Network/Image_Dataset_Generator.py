@@ -23,7 +23,7 @@ if not os.path.exists(directory):
 	os.makedirs(directory, exist_ok = 'True')
 
 number_of_images = 0
-MAX_NUMBER_OF_IMAGES = 50
+MAX_NUMBER_OF_IMAGES = 1
 count = 0
 
 while number_of_images < MAX_NUMBER_OF_IMAGES:
